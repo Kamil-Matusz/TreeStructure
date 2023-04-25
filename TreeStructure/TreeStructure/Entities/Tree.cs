@@ -8,5 +8,20 @@ namespace TreeStructure.Entities
         public int TreeId { get; set; }
         public string Name { get; set; }
         public int? ParentId { get; set; }
+
+        public Tree(int treeId,string name,int? parentId)
+        {
+            TreeId = treeId;
+            Name = name;
+            ParentId = parentId;
+        }
+
+        public Tree(string name,int? parentId) 
+        {
+            Name = name;
+            ParentId = parentId;
+        }
+
+        
     }
 }

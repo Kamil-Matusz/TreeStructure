@@ -81,7 +81,7 @@ namespace TreeStructure.Controllers
             return Json(new { success = true });
         }
 
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddNode(TreeNode node)
         {
@@ -89,6 +89,7 @@ namespace TreeStructure.Controllers
             {
                 Tree tree = new Tree()
                 {
+
                     Name = node.NodeName,
                     ParentId = node.ParentId,
                 };
@@ -98,6 +99,6 @@ namespace TreeStructure.Controllers
             }
 
             return Json(new { success = true });
-        }
+        }*/
     }
 }

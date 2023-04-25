@@ -18,6 +18,19 @@ namespace TreeStructure.DAL
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<TreeDbContext>();
                 dbContext.Database.Migrate();
+
+                var tree = dbContext.Trees.ToList();
+                if(!tree.Any()) 
+                {
+                    tree = new List<Tree>
+                    {
+                        new Tree("Root",null),
+                        new Tree("Dokumenty",1),
+                        new Tree("Filmy",2),
+                    };
+                    dbContext.AddRange(tree);
+                    dbContext.SaveChanges();
+                }
             }
 
             return Task.CompletedTask;
