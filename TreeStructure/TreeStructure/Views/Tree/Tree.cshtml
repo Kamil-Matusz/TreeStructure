@@ -5,6 +5,7 @@
     @{
         int id = 0;
         int row = 0;
+        int parentId = 0;
         foreach(var i in Model.Where(x => x.ParentId is null))
         {
             if(i.TreeId == id)
