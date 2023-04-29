@@ -4,6 +4,12 @@
 }
 
 <div class="container">
+    <a class="btn btn-success" asp-controller="Tree" asp-action="CreateTreeNode">Add New Tree Node</a>
+    <br />
+    <br />
+    <a class="btn btn-danger" asp-controller="Tree" asp-action="DeleteTreeNode">Delete Tree Node</a>
+    <br />
+    <br />
     @Html.Partial("Tree")
 </div>
 

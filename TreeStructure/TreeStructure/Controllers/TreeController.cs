@@ -33,15 +33,32 @@ namespace TreeStructure.Controllers
         {
             _dbContext.Trees.Add(tree);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult DeleteTreeNode()
+        {
+            DropDownList();
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteTreeNode(int treeId)
+        {
+            var tree = _dbContext.Trees.Find(treeId);
+            
+            if(tree != null)
+            {
+                _dbContext.Trees.Remove(tree);
+            }
+            _dbContext.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         private void DropDownList()
         {
             List<SelectListItem> nodes = new SelectList(_dbContext.Trees,"TreeId","Name").ToList();
             ViewBag.Nodes = nodes;
-
-
         }
     }
 }
