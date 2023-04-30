@@ -14,12 +14,9 @@
 </div>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
-@* CSS *@
-<link href="~/Content/bootstrap.css" rel="stylesheet" />
-<link href="~/Content/Site.css" rel="stylesheet" />
-<script src="~/Scripts/bootstrap.min.js"></script>
-<script src="~/Scripts/modernizr-2.6.2.js"></script>
-<script src="~/Scripts/jquery-1.7.1.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/lib/jquery/dist/jquery.js"stylesheet" />
+<link rel="stylesheet" href="~/css/site.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
 
 
@@ -54,7 +51,8 @@
         background-position: -64px -16px;
     }
 </style>
-@* Jquery for Collapse/Expend *@
+
+@section Scripts {
 <script type="text/javascript">
     $(document).ready(function () {
         $('.icon').live('click', function () {
@@ -65,3 +63,4 @@
         });
     })
 </script>
+}
