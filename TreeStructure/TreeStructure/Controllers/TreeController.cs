@@ -55,6 +55,36 @@ namespace TreeStructure.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public ActionResult ChangeNodePanel()
+        {
+            List<Tree> treeList = new();
+            treeList = _dbContext.Trees.ToList();
+            return View(treeList);
+        }
+
+        [HttpGet]
+        [Route("Tree/{treeName}/Edit")]
+        public IActionResult EditTreeNode(string name)
+        {
+            var tree = _dbContext.Trees.FirstOrDefault(t => t.Name == name);
+            return View(tree);
+        }
+
+        [HttpPost]
+        [Route("Tree/{treeName}/Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditTreeNode(Tree tree)
+        {
+            if(ModelState.IsValid)
+            {
+                var entry = _dbContext.Entry(tree);
+                entry.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                _dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(tree);
+        }
+
         private void DropDownList()
         {
             List<SelectListItem> nodes = new SelectList(_dbContext.Trees,"TreeId","Name").ToList();
