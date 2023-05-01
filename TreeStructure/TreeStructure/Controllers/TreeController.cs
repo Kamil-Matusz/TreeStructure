@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks.Dataflow;
+using System.Xml.Linq;
 using TreeStructure.DAL;
 using TreeStructure.Entities;
 using TreeStructure.Models;
@@ -36,21 +37,19 @@ namespace TreeStructure.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult DeleteTreeNode()
+        [HttpGet]
+        [Route("Tree/{treeId}/Delete")]
+        public ActionResult DeleteTreeNode(int treeId)
         {
-            DropDownList();
-            return View();
+            var tree = _dbContext.Trees.FirstOrDefault(t => t.TreeId == treeId);
+            return View(tree);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteTreeNode(int treeId)
+        [Route("Tree/{treeId}/Delete")]
+        public ActionResult DeleteTreeNode(Tree tree)
         {
-            var tree = _dbContext.Trees.Find(treeId);
-            
-            if(tree != null)
-            {
-                _dbContext.Trees.Remove(tree);
-            }
+            _dbContext.Trees.Remove(tree);
             _dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }

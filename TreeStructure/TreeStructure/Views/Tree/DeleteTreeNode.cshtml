@@ -12,8 +12,17 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-             @Html.DropDownListFor(x => x.ParentId, (IEnumerable<SelectListItem>)ViewBag.Nodes,"Select Parent", new {@class = "form-control"})
+            @Html.DisplayNameFor(model => model.TreeId)
         </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TreeId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ParentId)
         </dt>
