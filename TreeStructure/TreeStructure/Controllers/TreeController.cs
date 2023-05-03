@@ -62,15 +62,16 @@ namespace TreeStructure.Controllers
         }
 
         [HttpGet]
-        [Route("Tree/{treeName}/Edit")]
-        public IActionResult EditTreeNode(string name)
+        [Route("Tree/{treeId}/Edit")]
+        public IActionResult EditTreeNode(int treeId)
         {
-            var tree = _dbContext.Trees.FirstOrDefault(t => t.Name == name);
+            var tree = _dbContext.Trees.FirstOrDefault(t => t.TreeId == treeId);
+            DropDownList();
             return View(tree);
         }
 
         [HttpPost]
-        [Route("Tree/{treeName}/Edit")]
+        [Route("Tree/{treeId}/Edit")]
         [ValidateAntiForgeryToken]
         public ActionResult EditTreeNode(Tree tree)
         {

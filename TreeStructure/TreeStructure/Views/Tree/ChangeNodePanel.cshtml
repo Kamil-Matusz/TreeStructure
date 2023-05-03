@@ -28,8 +28,8 @@
                 @Html.DisplayFor(modelItem => item.ParentId)
             </td>
             <td>
-                  <a class="btn btn-warning" asp-controller="Tree" asp-action="EditTreeNode" asp-route-treeName="@item.Name">Edit</a>
-                   <a class="btn btn-danger" asp-controller="Tree" asp-action="DeleteTreeNode" asp-route-treeId="@item.TreeId">Delete</a>
+                  <a class="btn btn-warning" asp-controller="Tree" asp-action="EditTreeNode" asp-route-treeId="@item.TreeId">Edit</a>
+                  <a class="btn btn-danger" asp-controller="Tree" asp-action="DeleteTreeNode" asp-route-treeId="@item.TreeId">Delete</a>
             </td>
         </tr>
 }
