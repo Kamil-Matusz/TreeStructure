@@ -10,6 +10,6 @@ Tree structure management mechanism on the .NET Core MVC
 - Bootstrap
 
 ## Database configuration
-For the database to work properly, create a migration and apply the appropriate data in the file <b>appsettings.json</b> on line 10 change the database path to your database path.
+For the database to work properly, create a migration and apply the appropriate data in the file <b>appsettings.json</b> on line 10 <b>"connectionString"</b> change the database path to your database path.
 After changing and starting the project, a database should be created automatically with the initial data.
 
