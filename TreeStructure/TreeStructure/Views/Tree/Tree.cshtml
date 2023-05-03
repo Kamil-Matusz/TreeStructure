@@ -1,0 +1,48 @@
+﻿@using TreeStructure.Entities;
+@model List<TreeStructure.Entities.Tree>
+
+<table class="table table-bordered">
+    @{
+        int id = 0;
+        int row = 0;
+        int parentId = 0;
+        foreach(var i in Model.Where(x => x.ParentId is null))
+        {
+            if(i.TreeId == id)
+            {
+                continue;
+            }
+            else
+            {
+                if(row == 0)
+                {
+                    <thead>
+                        <tr>
+                            <th>TreeId</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                }
+                row++;
+                id = i.TreeId;
+                var trees = Model.Where(x => x.ParentId.Equals(i.TreeId)).ToList();
+                var newTreeList = Model.Where(x => !x.TreeId.Equals(x.TreeId)).ToList();
+                <tbody>
+                    <tr>
+                        <td>
+                        @if (trees.Count > 0)
+                        {
+                        <span class="icon icon-e" style="float:left; cursor:pointer;"><i class="bi bi-arrow-right"></i></span>
+                        }
+                        else
+                        {
+                        <span style="display:inline-block;width:14px">&nbsp;</span>
+                        }
+                        @i.TreeId</td>
+                        <td>@i.Name</td>
+                    </tr>
+                </tbody>
+            }
+        }
+    }
+</table>

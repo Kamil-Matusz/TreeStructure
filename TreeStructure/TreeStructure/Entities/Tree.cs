@@ -9,6 +9,10 @@ namespace TreeStructure.Entities
         public string Name { get; set; }
         public int? ParentId { get; set; }
 
+        public Tree()
+        {
+            
+        }
         public Tree(int treeId,string name,int? parentId)
         {
             TreeId = treeId;

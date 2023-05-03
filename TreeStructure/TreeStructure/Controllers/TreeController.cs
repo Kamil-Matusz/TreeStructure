@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks.Dataflow;
+using System.Xml.Linq;
 using TreeStructure.DAL;
 using TreeStructure.Entities;
 using TreeStructure.Models;
@@ -13,92 +15,80 @@ namespace TreeStructure.Controllers
         {
             _dbContext = dbContext;
         }
+        
         public ActionResult Index()
         {
-            var TreeList = _dbContext.Trees.Where(x => x.ParentId == null)
-                .Select(x => new
-                {
-                    x.TreeId,
-                    x.Name
-                }).ToList();
-                ViewBag.TreeList = TreeList;
-            TreeHierarchy();
+            List<Tree> treeList = new();
+            treeList = _dbContext.Trees.OrderBy(x => x.TreeId).ToList();
+            return View(treeList);
+        }
+
+        [HttpGet]
+        public ActionResult CreateTreeNode()
+        {
+            DropDownList();
             return View();
         }
-
-        public JsonResult TreeHierarchy()
-        {
-            List<Tree> Tree = new();
-            List<TreeViewModel> TreeRecords = new();
-
-            Tree = _dbContext.Trees.ToList();
-
-            TreeRecords = Tree.Where(x => x.ParentId is null)
-                .Select(t => new TreeViewModel
-                {
-                    Id = t.TreeId,
-                    Text = t.Name,
-                    ParentId = t.ParentId,
-                    Childrens = GetTreeChildrens(Tree, t.TreeId)
-                }).ToList();
-
-            return Json(TreeRecords);
-        }
-
-        private List<TreeViewModel> GetTreeChildrens(List<Tree> TreeList, int parentId)
-        {
-            return TreeList.Where(x => x.ParentId == parentId)
-                .Select(t => new TreeViewModel
-                {
-                    Id = t.TreeId,
-                    Text = t.Name,
-                    ParentId = parentId,
-                    Childrens = GetTreeChildrens(TreeList,t.TreeId)
-                }).ToList();
-        }
-
         [HttpPost]
-        public JsonResult DeleteTreeNode(string values)
+        public ActionResult CreateTreeNode(Tree tree) 
         {
-            var id = values.Split(',');
-            foreach(var item in id)
-            {
-                int TreeId = int.Parse(item);
-                _dbContext.Trees.RemoveRange(_dbContext.Trees.Where(x => x.TreeId == TreeId).ToList());
-                _dbContext.SaveChanges();
-            }
-
-            return Json(new { success = true });
-        }
-
-        [HttpPost]
-        public JsonResult ChangeNode(int nodeId,int parentId)
-        {
-            var Node = _dbContext.Trees.First(x => x.TreeId==nodeId);
-            Node.ParentId = parentId;
+            _dbContext.Trees.Add(tree);
             _dbContext.SaveChanges();
-
-            return Json(new { success = true });
+            return RedirectToAction(nameof(Index));
         }
 
-        /*[HttpPost]
+        [HttpGet]
+        [Route("Tree/{treeId}/Delete")]
+        public ActionResult DeleteTreeNode(int treeId)
+        {
+            var tree = _dbContext.Trees.FirstOrDefault(t => t.TreeId == treeId);
+            return View(tree);
+        }
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddNode(TreeNode node)
+        [Route("Tree/{treeId}/Delete")]
+        public ActionResult DeleteTreeNode(Tree tree)
+        {
+            _dbContext.Trees.Remove(tree);
+            _dbContext.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public ActionResult ChangeNodePanel()
+        {
+            List<Tree> treeList = new();
+            treeList = _dbContext.Trees.ToList();
+            return View(treeList);
+        }
+
+        [HttpGet]
+        [Route("Tree/{treeId}/Edit")]
+        public IActionResult EditTreeNode(int treeId)
+        {
+            var tree = _dbContext.Trees.FirstOrDefault(t => t.TreeId == treeId);
+            DropDownList();
+            return View(tree);
+        }
+
+        [HttpPost]
+        [Route("Tree/{treeId}/Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditTreeNode(Tree tree)
         {
             if(ModelState.IsValid)
             {
-                Tree tree = new Tree()
-                {
-
-                    Name = node.NodeName,
-                    ParentId = node.ParentId,
-                };
-
-                _dbContext.Trees.Add(tree);
+                var entry = _dbContext.Entry(tree);
+                entry.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 _dbContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
             }
+            return View(tree);
+        }
 
-            return Json(new { success = true });
-        }*/
+        private void DropDownList()
+        {
+            List<SelectListItem> nodes = new SelectList(_dbContext.Trees,"TreeId","Name").ToList();
+            ViewBag.Nodes = nodes;
+        }
     }
 }

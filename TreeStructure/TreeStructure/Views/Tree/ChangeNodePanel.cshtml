@@ -1,0 +1,37 @@
+﻿@model IEnumerable<TreeStructure.Entities.Tree>
+
+@{
+    ViewData["Title"] = "ChangeNodePanel";
+}
+
+<h1>Change Node Panel</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentId)
+            </td>
+            <td>
+                  <a class="btn btn-warning" asp-controller="Tree" asp-action="EditTreeNode" asp-route-treeId="@item.TreeId">Edit</a>
+                  <a class="btn btn-danger" asp-controller="Tree" asp-action="DeleteTreeNode" asp-route-treeId="@item.TreeId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
