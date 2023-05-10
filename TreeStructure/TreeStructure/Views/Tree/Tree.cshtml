@@ -18,8 +18,8 @@
                 {
                     <thead>
                         <tr>
-                            <th>TreeId</th>
-                            <th>Name</th>
+                            <th>@Html.ActionLink("TreeId", "Index", new { sortOrder = ViewBag.IdSort })</th>
+                            <th>@Html.ActionLink("Name", "Index", new { sortOrder = ViewBag.NameSort })</th>
                         </tr>
                     </thead>
                 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks.Dataflow;
 using System.Xml.Linq;
 using TreeStructure.DAL;
@@ -16,10 +18,24 @@ namespace TreeStructure.Controllers
             _dbContext = dbContext;
         }
         
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
             List<Tree> treeList = new();
             treeList = _dbContext.Trees.OrderBy(x => x.TreeId).ToList();
+            ViewBag.IdSort = String.IsNullOrEmpty(sortOrder) ? "Id_desc" : "";
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            switch (sortOrder)
+            {
+                case "Id_desc":
+                    treeList = treeList.OrderByDescending(x => x.TreeId).ToList();
+                    break;
+                case "name_desc":
+                    treeList = treeList.OrderByDescending(x => x.Name).ToList();
+                    break;
+                default:
+                    treeList = treeList.OrderBy(x => x.Name).ToList();
+                    break;
+            }
             return View(treeList);
         }
 
@@ -54,10 +70,24 @@ namespace TreeStructure.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult ChangeNodePanel()
+        public ActionResult ChangeNodePanel(string sortOrder)
         {
             List<Tree> treeList = new();
             treeList = _dbContext.Trees.ToList();
+            ViewBag.ParentSort = String.IsNullOrEmpty(sortOrder) ? "parentId_asc" : "";
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            switch(sortOrder)
+            {
+                case "parentId_asc":
+                    treeList = treeList.OrderBy(x => x.ParentId).ToList();
+                    break;
+                case "name_desc":
+                    treeList = treeList.OrderByDescending(x => x.Name).ToList();
+                    break;
+                default:
+                    treeList = treeList.OrderBy(x => x.Name).ToList();
+                    break;
+            }
             return View(treeList);
         }
 

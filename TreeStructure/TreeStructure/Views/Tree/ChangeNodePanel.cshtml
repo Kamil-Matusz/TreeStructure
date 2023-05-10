@@ -10,10 +10,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.ActionLink("Name", "ChangeNodePanel", new { sortOrder = ViewBag.NameSort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ParentId)
+                @Html.ActionLink("ParentId", "ChangeNodePanel", new { sortOrder = ViewBag.ParentSort })
             </th>
             <th></th>
         </tr>
