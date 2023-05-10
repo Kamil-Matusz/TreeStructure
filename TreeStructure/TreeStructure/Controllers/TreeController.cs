@@ -54,10 +54,24 @@ namespace TreeStructure.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult ChangeNodePanel()
+        public ActionResult ChangeNodePanel(string sortOrder)
         {
             List<Tree> treeList = new();
             treeList = _dbContext.Trees.ToList();
+            ViewBag.ParentSort = String.IsNullOrEmpty(sortOrder) ? "parentId_asc" : "";
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            switch(sortOrder)
+            {
+                case "parentId_asc":
+                    treeList = treeList.OrderBy(x => x.ParentId).ToList();
+                    break;
+                case "name_desc":
+                    treeList = treeList.OrderByDescending(x => x.Name).ToList();
+                    break;
+                default:
+                    treeList = treeList.OrderBy(x => x.Name).ToList();
+                    break;
+            }
             return View(treeList);
         }
 
